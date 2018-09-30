@@ -43,18 +43,21 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 public class HardwarePushbot_Nick
 {
     /* Public OpMode members. */
-    public DcMotor leftFrontMotor   = null;
-    public DcMotor leftRearMotor  = null;
-    public DcMotor rightFrontMotor   = null;
-    public DcMotor rightRearMotor    = null;
-    public Servo leftFrontServo   = null;
-    public Servo leftRearServo   = null;
+    public DcMotor leftFrontMotor  = null;
+    public DcMotor leftRearMotor   = null;
+    public DcMotor rightFrontMotor = null;
+    public DcMotor rightRearMotor  = null;
+    public DcMotor liftMotor       = null;
+    public DcMotor armMotor        = null;
+    public Servo leftFrontServo    = null;
+    public Servo leftRearServo     = null;
     public Servo rightFrontServo   = null;
-    public Servo rightRearServo   = null;
-
-    public static final double steeringstriaght       =  0.5;
-    public static final double steeringright = 0;
-    public static final double steeringleft = 1;
+    public Servo rightRearServo    = null;
+    public Servo grabberHorizServo = null;
+    public Servo grabberVertServo  = null;
+    public static final double steeringstriaght =  0.5;
+    public static final double steeringright    =    0;
+    public static final double steeringleft     =    1;
     /* local OpMode members. */
     HardwareMap hwMap           =  null;
     private ElapsedTime period  = new ElapsedTime();
@@ -71,9 +74,11 @@ public class HardwarePushbot_Nick
 
         // Define and Initialize Motors
         leftFrontMotor  = hwMap.get(DcMotor.class, "FrontLeft_Motor");
-        leftRearMotor = hwMap.get(DcMotor.class, "RearLeft_Motor");
-        rightFrontMotor    = hwMap.get(DcMotor.class, "FrontRight_Motor");
-        rightRearMotor    = hwMap.get(DcMotor.class, "RearRight_Motor");
+        leftRearMotor   = hwMap.get(DcMotor.class, "RearLeft_Motor");
+        rightFrontMotor = hwMap.get(DcMotor.class, "FrontRight_Motor");
+        rightRearMotor  = hwMap.get(DcMotor.class, "RearRight_Motor");
+        liftMotor       = hwMap.get(DcMotor.class, "lift_Motor");
+        armMotor        = hwMap.get(DcMotor.class, "arm_Motor");
         leftFrontMotor.setDirection(DcMotor.Direction.FORWARD);
         leftRearMotor.setDirection(DcMotor.Direction.FORWARD);
         rightFrontMotor.setDirection(DcMotor.Direction.REVERSE);
@@ -90,10 +95,12 @@ public class HardwarePushbot_Nick
         leftRearMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rightFrontMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         // Define and initialize ALL installed servos.
-        leftFrontServo  = hwMap.get(Servo.class, "FrontLeft_Servo");
-        rightFrontServo = hwMap.get(Servo.class, "FrontRight_Servo");
-        rightRearServo = hwMap.get(Servo.class, "RearRight_Servo");
-        leftRearServo = hwMap.get(Servo.class, "RearLeft_Servo");
+        leftFrontServo    = hwMap.get(Servo.class, "FrontLeft_Servo");
+        rightFrontServo   = hwMap.get(Servo.class, "FrontRight_Servo");
+        rightRearServo    = hwMap.get(Servo.class, "RearRight_Servo");
+        leftRearServo     = hwMap.get(Servo.class, "RearLeft_Servo");
+        grabberHorizServo = hwMap.get (Servo.class, "GrabberHoriz_Servo");
+        grabberVertServo  = hwMap.get (Servo.class, "GrabberVert_Servo");
 
         rightRearServo.setPosition(steeringstriaght);
         rightFrontServo.setPosition(steeringstriaght);
@@ -102,4 +109,5 @@ public class HardwarePushbot_Nick
 
     }
  }
+
 
