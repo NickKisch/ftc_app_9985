@@ -34,7 +34,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 @TeleOp(name="Pushbot: Teleop Tank", group="Pushbot")
 //@Disabled
 public class PushbotTeleopTank_Iterative extends OpMode {
-
+    private SensorStartup sensors = new SensorStartup();
     /* Declare OpMode members. */
     HardwarePushbot_Nick robot       = new HardwarePushbot_Nick(); // use the class created to define a Pushbot's hardware
 
@@ -78,6 +78,18 @@ public class PushbotTeleopTank_Iterative extends OpMode {
         double rightFrontSpeed;
         double leftRearSpeed;
         double rightRearSpeed;
+        double liftSpeed = 0;
+
+        if (gamepad2.dpad_up)
+            liftSpeed = 0.5f;
+
+        if (gamepad2.dpad_down)
+            liftSpeed = -0.5f;
+
+        if ((gamepad2.dpad_up && sensors.liftLimitTop.getState()==true)|| (gamepad2.dpad_down && sensors.liftLimitBottom.getState()==false) )
+        {
+            liftSpeed = 0;
+        }
         // Run wheels in tank mode (note: The joystick goes negative when pushed forwards, so negate it)
 
         leftFrontSpeed = -gamepad1.left_stick_y - gamepad1.left_trigger + gamepad1.right_trigger;
@@ -89,7 +101,8 @@ public class PushbotTeleopTank_Iterative extends OpMode {
         robot.rightFrontMotor.setPower(rightFrontSpeed);
         robot.leftRearMotor.setPower(leftRearSpeed);
         robot.rightRearMotor.setPower(rightRearSpeed);
-//Servo position 0 is left and servo position right is 0.6 and servo straight is 0.3
+        robot.liftMotor.setPower(liftSpeed);
+//Servo position 1 is left and servo position right is 0 and servo straight is 0.5
         //if (gamepad1.x){
           //  robot.leftRearServo.setPosition(0);
         //}   else if (gamepad1.y) {
