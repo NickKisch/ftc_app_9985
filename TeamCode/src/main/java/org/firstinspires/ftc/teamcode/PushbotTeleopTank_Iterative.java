@@ -49,9 +49,10 @@ public class PushbotTeleopTank_Iterative extends OpMode {
          * The init() method of the hardware class does all the work here
          */
         robot.init(hardwareMap);
+        sensors.init(hardwareMap);
 
         // Send telemetry message to signify robot waiting;
-        telemetry.addData("Say", "Hello Driver");    //
+        telemetry.addData("Say", "You got this my brofessor");    //
     }
 
     /*

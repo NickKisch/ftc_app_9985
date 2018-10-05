@@ -8,8 +8,8 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
  */
 
 public class SensorStartup {
-public DigitalChannel liftLimitTop;
-public DigitalChannel liftLimitBottom;
+public DigitalChannel liftLimitTop = null;
+public DigitalChannel liftLimitBottom = null;
 HardwareMap hwMap = null;
 public void init(HardwareMap ahwMap)
 {
