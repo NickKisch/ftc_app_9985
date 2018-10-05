@@ -87,7 +87,7 @@ public class PushbotTeleopTank_Iterative extends OpMode {
         if (gamepad2.dpad_down)
             liftSpeed = -0.5f;
 
-        if ((gamepad2.dpad_up && sensors.liftLimitTop.getState()==true)|| (gamepad2.dpad_down && sensors.liftLimitBottom.getState()==false) )
+        if ((gamepad2.dpad_up && sensors.liftLimitTop.getState()==false)|| (gamepad2.dpad_down && sensors.liftLimitBottom.getState()==false) )
         {
             liftSpeed = 0;
         }
