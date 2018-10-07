@@ -29,6 +29,7 @@ package org.firstinspires.ftc.teamcode;/* Copyright (c) 2017 FIRST. All rights r
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.util.Range;
 
 
 @TeleOp(name="Pushbot: Teleop Tank", group="Pushbot")
@@ -38,6 +39,8 @@ public class PushbotTeleopTank_Iterative extends OpMode {
     /* Declare OpMode members. */
     HardwarePushbot_Nick robot       = new HardwarePushbot_Nick(); // use the class created to define a Pushbot's hardware
 
+    double          servoOffset  = 0.5 ;                  // Servo mid position
+    final double    servoSpeed = 0.02 ;                 //
 
 
     /*
@@ -117,6 +120,17 @@ public class PushbotTeleopTank_Iterative extends OpMode {
         robot.rightRearServo.setPosition(-.5*gamepad1.right_stick_x+.5);
         robot.leftFrontServo.setPosition(-.5*gamepad1.right_stick_x+.5);
         robot.rightFrontServo.setPosition(-.5*gamepad1.right_stick_x+.5);
+
+        //Moves front servos
+        if (gamepad2.dpad_right)
+            servoOffset += servoSpeed;
+        else if (gamepad2.dpad_left)
+            servoOffset -= servoSpeed;
+
+        // Move both servos to new position.  Assume servos are mirror image of each other.
+        servoOffset = Range.clip(servoOffset, -0.5, 0.5);
+        robot.grabberHorizServo.setPosition(robot.steeringstriaght + servoOffset);
+       // robot.grabberVertServo.setPosition(robot.steeringstriaght - servoOffset);
 
 //}
 

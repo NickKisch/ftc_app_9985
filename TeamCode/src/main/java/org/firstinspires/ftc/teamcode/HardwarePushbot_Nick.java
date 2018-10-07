@@ -106,7 +106,8 @@ public class HardwarePushbot_Nick
         rightFrontServo.setPosition(steeringstriaght);
         leftRearServo.setPosition(steeringstriaght);
         leftFrontServo.setPosition(steeringstriaght);
-
+        grabberVertServo.setPosition(steeringstriaght);
+        grabberHorizServo.setPosition(steeringstriaght);
     }
  }
 
