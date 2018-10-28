@@ -56,7 +56,7 @@ public class PushbotTeleopTank_Iterative extends OpMode {
         sensors.init(hardwareMap);
 
         // Send telemetry message to signify robot waiting;
-        telemetry.addData("Say", "You got this my Nabroleon Bronaparte");    //
+        telemetry.addData("Say", "You got this my Nabroleon Bronaparte");//
     }
 
     /*
@@ -76,8 +76,7 @@ public class PushbotTeleopTank_Iterative extends OpMode {
      * Code to run REPEATEDLY after the driver hits PLAY but before they hit STOP
      */
 
-    double liftSpeed = 0;
-    double liftSpeedArm = 0;
+
     @Override
     public void loop() {
 
@@ -85,6 +84,8 @@ public class PushbotTeleopTank_Iterative extends OpMode {
         double rightFrontSpeed;
         double leftRearSpeed;
         double rightRearSpeed;
+        double liftSpeed = 0;
+        double liftSpeedArm = 0;
 
         if (gamepad1.dpad_up)
             liftSpeed = 0.5f;
@@ -121,6 +122,7 @@ public class PushbotTeleopTank_Iterative extends OpMode {
         robot.leftRearMotor.setPower(leftRearSpeed);
         robot.rightRearMotor.setPower(rightRearSpeed);
         robot.liftMotor.setPower(liftSpeed);
+        robot.armMotor.setPower(liftSpeedArm);
         //Servo position 1 is left and servo position right is 0 and servo straight is 0.5
         //if (gamepad1.x){
           //  robot.leftRearServo.setPosition(0);
