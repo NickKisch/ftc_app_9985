@@ -103,10 +103,10 @@ public class HardwarePushbot_Nick
         grabberHorizServo = hwMap.get (Servo.class, "GrabberHoriz_Servo");
         grabberVertServo  = hwMap.get (Servo.class, "GrabberVert_Servo");
 
-        rightRearServo.setPosition(steeringstriaght);
-        rightFrontServo.setPosition(steeringstriaght);
-        leftRearServo.setPosition(steeringstriaght);
-        leftFrontServo.setPosition(steeringstriaght);
+        rightRearServo.setPosition(MetaAutomation.turnRight);
+        rightFrontServo.setPosition(MetaAutomation.turnRight);
+        leftRearServo.setPosition(MetaAutomation.turnLeft);
+        leftFrontServo.setPosition(MetaAutomation.turnLeft);
         grabberVertServo.setPosition(steeringstriaght);
         grabberHorizServo.setPosition(steeringstriaght);
     }
