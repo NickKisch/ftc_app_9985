@@ -39,9 +39,10 @@ public class PushbotTeleopTank_Iterative extends OpMode {
     /* Declare OpMode members. */
     HardwarePushbot_Nick robot       = new HardwarePushbot_Nick(); // use the class created to define a Pushbot's hardware
 
-    double          servoOffset  = 0.5 ;                  // Servo mid position
-    final double    servoSpeed = 0.02 ;                 //
-
+    double          servoOffsetH  = 0.0;                  // Servo mid position
+    double          servoOffsetV  = 0.0;
+    final double    servoSpeedH   = 0.0005 ;
+    final double    servoSpeedV   = 0.001  ;
 
     /*
      * Code to run ONCE when the driver hits INIT
@@ -55,7 +56,7 @@ public class PushbotTeleopTank_Iterative extends OpMode {
         sensors.init(hardwareMap);
 
         // Send telemetry message to signify robot waiting;
-        telemetry.addData("Say", "You got this my brofessor");    //
+        telemetry.addData("Say", "You got this my Nabroleon Bronaparte");    //
     }
 
     /*
@@ -64,7 +65,6 @@ public class PushbotTeleopTank_Iterative extends OpMode {
     @Override
     public void init_loop() {
     }
-
     /*
      * Code to run ONCE when the driver hits PLAY
      */
@@ -75,6 +75,9 @@ public class PushbotTeleopTank_Iterative extends OpMode {
     /*
      * Code to run REPEATEDLY after the driver hits PLAY but before they hit STOP
      */
+
+    double liftSpeed = 0;
+    double liftSpeedArm = 0;
     @Override
     public void loop() {
 
@@ -82,20 +85,32 @@ public class PushbotTeleopTank_Iterative extends OpMode {
         double rightFrontSpeed;
         double leftRearSpeed;
         double rightRearSpeed;
-        double liftSpeed = 0;
 
-        if (gamepad2.dpad_up)
+        if (gamepad1.dpad_up)
             liftSpeed = 0.5f;
 
-        if (gamepad2.dpad_down)
+        if (gamepad1.dpad_down)
             liftSpeed = -0.5f;
 
-        if ((gamepad2.dpad_up && sensors.liftLimitTop.getState()==false)|| (gamepad2.dpad_down && sensors.liftLimitBottom.getState()==false) )
+        if ((gamepad1.dpad_up && sensors.liftLimitTopArm.getState()==false)|| (gamepad1.dpad_down && sensors.liftLimitBottom.getState()==false) )
         {
             liftSpeed = 0;
         }
-        // Run wheels in tank mode (note: The joystick goes negative when pushed forwards, so negate it)
+        //Arm lift
+        if (gamepad2.y)
+            liftSpeedArm = 0.5f;
 
+        if (gamepad2.a)
+            liftSpeedArm = -0.5f;
+
+        if ((gamepad2.y && sensors.liftLimitTopArm.getState()==false)|| (gamepad2.a && sensors.liftLimitBottom.getState()==false) )
+        {
+            liftSpeedArm = 0;
+        }
+
+
+            
+            // Run wheels in tank mode (note: The joystick goes negative when pushed forwards, so negate it)
         leftFrontSpeed = -gamepad1.left_stick_y - gamepad1.left_trigger + gamepad1.right_trigger;
         rightFrontSpeed = -gamepad1.left_stick_y + gamepad1.left_trigger - gamepad1.right_trigger;
         leftRearSpeed = -gamepad1.left_stick_y - gamepad1.left_trigger + gamepad1.right_trigger;
@@ -106,7 +121,7 @@ public class PushbotTeleopTank_Iterative extends OpMode {
         robot.leftRearMotor.setPower(leftRearSpeed);
         robot.rightRearMotor.setPower(rightRearSpeed);
         robot.liftMotor.setPower(liftSpeed);
-//Servo position 1 is left and servo position right is 0 and servo straight is 0.5
+        //Servo position 1 is left and servo position right is 0 and servo straight is 0.5
         //if (gamepad1.x){
           //  robot.leftRearServo.setPosition(0);
         //}   else if (gamepad1.y) {
@@ -123,20 +138,28 @@ public class PushbotTeleopTank_Iterative extends OpMode {
 
         //Moves front servos
         if (gamepad2.dpad_right)
-            servoOffset += servoSpeed;
+            servoOffsetH += servoSpeedH;
         else if (gamepad2.dpad_left)
-            servoOffset -= servoSpeed;
+            servoOffsetH -= servoSpeedH;
+        if (gamepad2.dpad_up)
+            servoOffsetV += servoSpeedV;
+        else if (gamepad2.dpad_down)
+            servoOffsetV -= servoSpeedV;
 
         // Move both servos to new position.  Assume servos are mirror image of each other.
-        servoOffset = Range.clip(servoOffset, -0.5, 0.5);
-        robot.grabberHorizServo.setPosition(robot.steeringstriaght + servoOffset);
-       // robot.grabberVertServo.setPosition(robot.steeringstriaght - servoOffset);
-
+        servoOffsetH = Range.clip(servoOffsetH, -0.25, 0.25);
+        robot.grabberHorizServo.setPosition(robot.steeringstriaght + servoOffsetH);
+        servoOffsetV = Range.clip(servoOffsetV, -.5, 0.5);
+        robot.grabberVertServo.setPosition(robot.steeringstriaght + servoOffsetV);
+        //robot.grabberVertServo.setPosition(robot.steeringstriaght - servoOffset);
 //}
 
         // Send telemetry message to signify robot running;
-        telemetry.addData("Servo",  "Offset = %.2f",robot.steeringstriaght);
+       // telemetry.addData("vert Servo",  "position = %.2f",robot.steeringstriaght + servoOffsetV);
+        telemetry.addData("Servo Offset H","Offset H = %.2f", servoOffsetH);
+        telemetry.addData("Servo Offset V","Offset V = %.2f", servoOffsetV);
         //telemetry.addData("left",  "%.2f", left);
+
     }
 
     /*
