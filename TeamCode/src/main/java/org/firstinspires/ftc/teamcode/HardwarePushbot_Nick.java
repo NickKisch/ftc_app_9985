@@ -61,7 +61,6 @@ public class HardwarePushbot_Nick
     /* local OpMode members. */
     HardwareMap hwMap           =  null;
     private ElapsedTime period  = new ElapsedTime();
-
     /* Constructor */
     public HardwarePushbot_Nick(){
 
@@ -83,6 +82,8 @@ public class HardwarePushbot_Nick
         leftRearMotor.setDirection(DcMotor.Direction.FORWARD);
         rightFrontMotor.setDirection(DcMotor.Direction.REVERSE);
         rightRearMotor.setDirection(DcMotor.Direction.REVERSE);
+        liftMotor.setDirection(DcMotor.Direction.REVERSE);
+        armMotor.setDirection(DcMotor.Direction.REVERSE);
         // Set all motors to zero power
         leftFrontMotor.setPower(0);
         leftRearMotor.setPower(0);
