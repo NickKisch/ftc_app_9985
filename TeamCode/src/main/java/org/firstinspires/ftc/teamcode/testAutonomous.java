@@ -10,7 +10,7 @@ public class testAutonomous extends MetaAutomation {
         setupHardware();
         waitForStart();
 
-
+        /*
         //Testing angles
         transform.left();
         sleep(2000);
@@ -18,8 +18,10 @@ public class testAutonomous extends MetaAutomation {
         sleep(2000);
         transform.straight();
         sleep(2000);
+        */
 
         //Testing driving
+        transform.straight();
         transform.eDriveDistance(speed_NORMAL, 12 , 3);
 
     }

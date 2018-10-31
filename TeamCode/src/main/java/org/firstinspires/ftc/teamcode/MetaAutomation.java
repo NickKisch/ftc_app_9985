@@ -80,17 +80,20 @@ abstract public class MetaAutomation extends LinearOpMode {
     }
 
     public class transform {
+        int delay = 2000;
 
         public void left() {
             double server = turnLeft;
 
             setAngleInd(server, server, server, server);
+            sleep(delay);
         }
 
         public void right() {
             double server = turnRight;
 
             setAngleInd(server, server, server, server);
+            sleep(delay);
 
         }
 
@@ -98,6 +101,7 @@ abstract public class MetaAutomation extends LinearOpMode {
             double server = turnStraight;
 
             setAngleInd(server, server, server, server);
+            sleep(delay);
 
         }
 
@@ -107,6 +111,7 @@ abstract public class MetaAutomation extends LinearOpMode {
             double serverStep = ((1./180.)*(angle+90.));
 
             setAngleInd(serverStep, serverStep, serverStep, serverStep);
+            sleep(delay);
 
         }
 
@@ -115,6 +120,7 @@ abstract public class MetaAutomation extends LinearOpMode {
             robot.rightFrontServo.setPosition(frontRight);
             robot.leftRearServo.setPosition(rearLeft);
             robot.rightRearServo.setPosition(rearRight);
+            sleep(delay);
         }
 
         public void eDriveDistance(double speed, double distanceInches, double stimeout){
@@ -178,33 +184,44 @@ abstract public class MetaAutomation extends LinearOpMode {
 
                 idle();
 
-                while (opModeIsActive() || (runtime.seconds() < sTimeout) || robot.leftFrontMotor.isBusy() || robot.rightRearMotor.isBusy() || robot.rightFrontMotor.isBusy() || robot.leftRearMotor.isBusy()) {
+                while ((opModeIsActive() && (runtime.seconds() < sTimeout)) && (robot.leftFrontMotor.isBusy() && robot.rightRearMotor.isBusy() && robot.rightFrontMotor.isBusy() && robot.leftRearMotor.isBusy())) {
                     //View old autonomous if this does not work
 
                     //Display telemetry
                     telemetry.addData("Status", "eDrive");
                     telemetry.addData("Running to", "%7d :%7d :%7d :%7d", newLeftFrontTarget, newRightFrontTarget, newLeftRearTarget, newRightRearTarget );
                     telemetry.addData("Running at", "%7d :%7d :%7d :%7d", robot.leftFrontMotor.getCurrentPosition(), robot.rightFrontMotor.getCurrentPosition(), robot.leftRearMotor.getCurrentPosition(), robot.rightRearMotor.getCurrentPosition());
-                    telemetry.addData("Runing Time Max", "%7d", runtime.milliseconds());
-                    telemetry.addData("Running Time At", "%7d", (sTimeout * 1000.));
+                    //telemetry.addData("Runing Time Max", "%7d", runtime.milliseconds());
+                    //telemetry.addData("Running Time At", "%7d", (sTimeout * 1000.));
                     telemetry.update();
                     idle();
                 }
+
+                //Turn off run to position mode on encoders
+                // Turn off RUN_TO_POSITION
+                robot.leftFrontMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                robot.rightFrontMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                robot.leftRearMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                robot.rightRearMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                idle();
 
                 //Stop all motion
                 robot.leftFrontMotor.setPower(0);
                 robot.rightFrontMotor.setPower(0);
                 robot.leftRearMotor.setPower(0);
                 robot.rightRearMotor.setPower(0);
-                idle();
 
-                //Turn off run to position mode on encoders
-                // Turn off RUN_TO_POSITION
                 robot.leftFrontMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
                 robot.rightFrontMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
                 robot.leftRearMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
                 robot.rightRearMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
                 idle();
+
+
+                robot.leftFrontMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+                robot.rightFrontMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+                robot.leftRearMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+                robot.rightRearMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
             }
         }
     }
