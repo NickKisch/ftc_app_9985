@@ -107,9 +107,10 @@ public class HardwarePushbot_Nick
         rightFrontServo.setPosition(MetaAutomation.turnRight);
         leftRearServo.setPosition(MetaAutomation.turnLeft);
         leftFrontServo.setPosition(MetaAutomation.turnLeft);
-        grabberVertServo.setPosition(steeringstriaght);
-        grabberHorizServo.setPosition(steeringstriaght);
+        //grabberVertServo.setPosition(steeringstriaght);
+        //grabberHorizServo.setPosition(steeringstriaght);
     }
+
  }
 
 
