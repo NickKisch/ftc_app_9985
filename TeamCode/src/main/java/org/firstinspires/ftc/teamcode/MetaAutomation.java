@@ -81,7 +81,7 @@ abstract public class MetaAutomation extends LinearOpMode {
     }
 
     public class transform {
-        int delay = 2000;
+        int delay = 1000;
 
         public void left() {
             double server = turnLeft;
