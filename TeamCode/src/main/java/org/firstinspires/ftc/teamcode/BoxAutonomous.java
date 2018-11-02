@@ -16,11 +16,11 @@ public class BoxAutonomous extends MetaAutomation {
         //Add autonomous code here
 
         LiftDown(5);
-        sleep(10000);
-        transform.right();
+        sleep(1000);
+        transform.straight();
         transform.eDriveDistance(speed_NORMAL, 2, 2);
 
-        transform.straight();
+        transform.right();
         transform.eDriveDistance(speed_NORMAL, -12, 5);
 
         transform.setAngleAll(turn_HalfLeft);
