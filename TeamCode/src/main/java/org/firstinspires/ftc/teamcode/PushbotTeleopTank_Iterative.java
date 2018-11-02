@@ -84,6 +84,7 @@ public class PushbotTeleopTank_Iterative extends OpMode {
         double rightFrontSpeed;
         double leftRearSpeed;
         double rightRearSpeed;
+        double speedFactor;
         double liftSpeed = 0;
         double liftSpeedArm = 0;
 
@@ -108,14 +109,17 @@ public class PushbotTeleopTank_Iterative extends OpMode {
         {
             liftSpeedArm = 0;
         }
-
+        if (gamepad1.right_bumper)
+            speedFactor = 0.3;
+        else
+            speedFactor = 1;
 
             
             // Run wheels in tank mode (note: The joystick goes negative when pushed forwards, so negate it)
-        leftFrontSpeed = -gamepad1.left_stick_y - gamepad1.left_trigger + gamepad1.right_trigger;
-        rightFrontSpeed = -gamepad1.left_stick_y + gamepad1.left_trigger - gamepad1.right_trigger;
-        leftRearSpeed = -gamepad1.left_stick_y - gamepad1.left_trigger + gamepad1.right_trigger;
-        rightRearSpeed = -gamepad1.left_stick_y + gamepad1.left_trigger - gamepad1.right_trigger;
+        leftFrontSpeed = (-gamepad1.left_stick_y - gamepad1.left_trigger + gamepad1.right_trigger)  * speedFactor;
+        rightFrontSpeed = (-gamepad1.left_stick_y + gamepad1.left_trigger - gamepad1.right_trigger) * speedFactor;
+        leftRearSpeed = (-gamepad1.left_stick_y - gamepad1.left_trigger + gamepad1.right_trigger)   * speedFactor;
+        rightRearSpeed = (-gamepad1.left_stick_y + gamepad1.left_trigger - gamepad1.right_trigger)  * speedFactor;
 
         robot.leftFrontMotor.setPower(leftFrontSpeed);
         robot.rightFrontMotor.setPower(rightFrontSpeed);
