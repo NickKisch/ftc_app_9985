@@ -13,6 +13,10 @@ abstract public class MetaAutomation extends LinearOpMode {
     public static final double speed_NORMAL = 0.5;
     public static final double speed_SLOW   = 0.1;
 
+    //Servo Angle Constants
+    public static final double turn_HalfLeft  = -45;
+    public static final double turn_HalfRight = 45;
+
     //Servo Turn Constants
     public static final double turnLeft     = 1;
     public static final double turnStraight = 0.5;
@@ -65,18 +69,15 @@ abstract public class MetaAutomation extends LinearOpMode {
         double reverseTime = 250; //Set a time interval to reverse the motor to stop the momentum
         runtime.reset(); //Reset time counter
         robot.liftMotor.setPower(speed_FULL); // Set lift motor to full speed
-        while(sensors.liftLimitTop.getState()==false || (runtime.milliseconds() <= (sTimeOut * 1000))) {
-            //while the touchsensor is not presssedn and have not reach the timout
+        while(sensors.liftLimitTop.getState() && (runtime.seconds() <= sTimeOut)) {
+            //while the touch sensor is not presssed and have not reach the timeout
             // do nothing
             idle();
         }
-        /*
+
         runtime.reset(); // Reset the time counter
-        while(runtime.milliseconds() <= reverseTime) {
-            robot.liftMotor.setPower(-speed_FULL);
-        }
         robot.liftMotor.setPower(0);
-        */
+
     }
 
     public class transform {

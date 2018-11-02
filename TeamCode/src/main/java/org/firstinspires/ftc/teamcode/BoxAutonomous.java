@@ -11,14 +11,21 @@ public class BoxAutonomous extends MetaAutomation {
     public void runOpMode() throws InterruptedException{
         //Init the autonomous
         setupHardware();
+        waitForStart();
 
         //Add autonomous code here
 
-        //Move lift arm down until limit switch is
         LiftDown(5);
+        sleep(10000);
+        transform.right();
+        transform.eDriveDistance(speed_NORMAL, 2, 2);
+
+        transform.straight();
+        transform.eDriveDistance(speed_NORMAL, -12, 5);
+
+        transform.setAngleAll(turn_HalfLeft);
 
 
-        //Move robot forward
     }
 
 }
