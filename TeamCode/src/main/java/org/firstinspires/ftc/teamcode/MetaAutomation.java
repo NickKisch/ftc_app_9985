@@ -173,7 +173,7 @@ abstract public class MetaAutomation extends LinearOpMode {
                 robot.leftFrontMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 robot.rightFrontMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 robot.leftRearMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                robot.rightRearMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                robot.rightRearMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
                 //Reset the timeout and start motion
                 runtime.reset();
@@ -185,7 +185,7 @@ abstract public class MetaAutomation extends LinearOpMode {
 
                 idle();
 
-                while ((opModeIsActive() && (runtime.seconds() < sTimeout)) && (robot.leftFrontMotor.isBusy() && robot.rightRearMotor.isBusy() && robot.rightFrontMotor.isBusy() && robot.leftRearMotor.isBusy())) {
+                while ((opModeIsActive() && (runtime.seconds() < sTimeout)) && (robot.leftFrontMotor.isBusy()/* && robot.rightRearMotor.isBusy() */ && robot.rightFrontMotor.isBusy() && robot.leftRearMotor.isBusy())) {
                     //View old autonomous if this does not work
 
                     //Display telemetry

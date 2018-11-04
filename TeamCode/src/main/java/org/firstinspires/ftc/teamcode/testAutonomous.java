@@ -23,6 +23,8 @@ public class testAutonomous extends MetaAutomation {
         //Testing driving
         transform.straight();
         transform.eDriveDistance(speed_NORMAL, 12, 3);
+        sleep(1000);
+        transform.eDriveDistance(speed_SLOW, 12, 3);
 
     }
 }
