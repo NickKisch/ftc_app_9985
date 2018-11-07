@@ -2,6 +2,8 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+
 @Autonomous(name="Test Auto.")
 public class testAutonomous extends MetaAutomation {
 
@@ -21,10 +23,9 @@ public class testAutonomous extends MetaAutomation {
         */
 
         //Testing driving
-        transform.straight();
-        transform.eDriveDistance(speed_NORMAL, 12, 3);
-        sleep(1000);
-        transform.eDriveDistance(speed_SLOW, 12, 3);
+        telemetry.addData("Current distance", sensors.distanceSensor.getDistance(DistanceUnit.CM));
+        telemetry.update();
+        sleep(10000);
 
     }
 }

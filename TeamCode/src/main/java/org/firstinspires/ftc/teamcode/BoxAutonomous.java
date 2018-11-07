@@ -15,14 +15,19 @@ public class BoxAutonomous extends MetaAutomation {
 
         //Add autonomous code here
 
-        LiftDown(2);
+        LiftDown(6);
         transform.straight();
         transform.eDriveDistance(speed_NORMAL, 2, 2);
 
         transform.right();
-        transform.eDriveDistance(speed_NORMAL, 12, 5);
+        transform.eDriveDistance(speed_NORMAL, 24, 5);
 
         transform.setAngleAll(turn_HalfLeft);
+        transform.driveDetectBallStop(20, speed_NORMAL, 0);
+        boolean gold = colorSensor.isObjectGold();
+        telemetry.addData("Is Gold", gold);
+        telemetry.update();
+        sleep(10000);
 
 
     }

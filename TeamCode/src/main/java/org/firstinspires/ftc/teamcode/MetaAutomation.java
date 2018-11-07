@@ -1,9 +1,13 @@
 package org.firstinspires.ftc.teamcode;
 
+import android.graphics.Color;
+
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
+
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 abstract public class MetaAutomation extends LinearOpMode {
     //Constants for autonomous
@@ -33,7 +37,7 @@ abstract public class MetaAutomation extends LinearOpMode {
     public static final double tout_LONG   = 10;
 
     //Encoder Constants
-    public static final double COUNTS_PER_INCHES = 90;
+    public static final double COUNTS_PER_INCHES = 77.143;
 
     //Vars for later
 
@@ -47,6 +51,7 @@ abstract public class MetaAutomation extends LinearOpMode {
     //Declare inner classes
     transform transform = new transform();
     rotate rotate = new rotate();
+    colorSensor colorSensor = new colorSensor();
     /*
     *  Functions for autnomouns
     *  this is the stuff that makes autonomous work
@@ -78,6 +83,10 @@ abstract public class MetaAutomation extends LinearOpMode {
         runtime.reset(); // Reset the time counter
         robot.liftMotor.setPower(0);
 
+    }
+
+    private boolean isBetween(double startValue, double endValue, double initValue){
+        return endValue > startValue ? initValue > startValue && initValue < endValue : initValue > endValue && initValue < startValue;
     }
 
     public class transform {
@@ -135,6 +144,35 @@ abstract public class MetaAutomation extends LinearOpMode {
 
         }
 
+        public void driveDetectBallStop(double sensorCM, double power, int sTimeout) {
+            double sensorDistance = 0;
+
+            robot.leftFrontMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            robot.rightFrontMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            robot.leftRearMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            robot.rightRearMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+            runtime.reset();
+
+            robot.leftFrontMotor.setPower(power);
+            robot.rightFrontMotor.setPower(power);
+            robot.leftRearMotor.setPower(power);
+            robot.rightRearMotor.setPower(power);
+
+            sensorDistance = sensors.distanceSensor.getDistance(DistanceUnit.CM);
+            while (opModeIsActive() && (!isBetween(0, sensorCM, sensorDistance))) {
+                telemetry.addData("Target Max Distance", sensorCM);
+                telemetry.addData("Current Distance", sensorDistance);
+                telemetry.update();
+                idle();
+            }
+
+            robot.leftFrontMotor.setPower(0);
+            robot.rightFrontMotor.setPower(0);
+            robot.leftRearMotor.setPower(0);
+            robot.rightRearMotor.setPower(0);
+        }
+
         public void eDrive (
                 double power,
                 double leftFrontEncoderTicks,
@@ -144,9 +182,9 @@ abstract public class MetaAutomation extends LinearOpMode {
                 double sTimeout) {
             //Reset the encoders on the motors that have them
             robot.leftFrontMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            robot.rightFrontMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            robot.leftRearMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            robot.rightRearMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            //robot.rightFrontMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            //robot.leftRearMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            //robot.rightRearMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
             //Make targets for encoders
             int newLeftFrontTarget;
@@ -159,21 +197,21 @@ abstract public class MetaAutomation extends LinearOpMode {
                 idle();
 
                 newLeftFrontTarget = robot.leftFrontMotor.getCurrentPosition() + (int) (leftFrontEncoderTicks);
-                newRightFrontTarget = robot.rightFrontMotor.getCurrentPosition() + (int) (rightFrontEncoderTicks);
-                newLeftRearTarget = robot.leftRearMotor.getCurrentPosition() + (int) (leftRearEncoderTicks);
-                newRightRearTarget = robot.rightRearMotor.getCurrentPosition() + (int) (rightRearEncoderTicks);
+                //newRightFrontTarget = robot.rightFrontMotor.getCurrentPosition() + (int) (rightFrontEncoderTicks);
+                //newLeftRearTarget = robot.leftRearMotor.getCurrentPosition() + (int) (leftRearEncoderTicks);
+                //newRightRearTarget = robot.rightRearMotor.getCurrentPosition() + (int) (rightRearEncoderTicks);
 
                 //Set the targets for the encoders
                 robot.leftFrontMotor.setTargetPosition(newLeftFrontTarget);
-                robot.rightFrontMotor.setTargetPosition(newRightFrontTarget);
-                robot.leftRearMotor.setTargetPosition(newLeftRearTarget);
-                robot.rightRearMotor.setTargetPosition(newRightRearTarget);
+                //robot.rightFrontMotor.setTargetPosition(newRightFrontTarget);
+                //robot.leftRearMotor.setTargetPosition(newLeftRearTarget);
+                //robot.rightRearMotor.setTargetPosition(newRightRearTarget);
 
                 //Set the mode on encoders to run to position
                 robot.leftFrontMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                robot.rightFrontMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                robot.leftRearMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                robot.rightRearMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                //robot.rightFrontMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                //robot.leftRearMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                //robot.rightRearMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
                 //Reset the timeout and start motion
                 runtime.reset();
@@ -185,13 +223,17 @@ abstract public class MetaAutomation extends LinearOpMode {
 
                 idle();
 
-                while ((opModeIsActive() && (runtime.seconds() < sTimeout)) && (robot.leftFrontMotor.isBusy()/* && robot.rightRearMotor.isBusy() */ && robot.rightFrontMotor.isBusy() && robot.leftRearMotor.isBusy())) {
+                while ((opModeIsActive() && (runtime.seconds() < sTimeout)) && (robot.leftFrontMotor.isBusy()/* && robot.rightRearMotor.isBusy()  && robot.rightFrontMotor.isBusy() && robot.leftRearMotor.isBusy() */)) {
                     //View old autonomous if this does not work
 
                     //Display telemetry
                     telemetry.addData("Status", "eDrive");
+                    telemetry.addData("Running to", "%7d", newLeftFrontTarget);
+                    telemetry.addData("Running at", "%7d", robot.leftFrontMotor.getCurrentPosition());
+                    /*
                     telemetry.addData("Running to", "%7d :%7d :%7d :%7d", newLeftFrontTarget, newRightFrontTarget, newLeftRearTarget, newRightRearTarget );
                     telemetry.addData("Running at", "%7d :%7d :%7d :%7d", robot.leftFrontMotor.getCurrentPosition(), robot.rightFrontMotor.getCurrentPosition(), robot.leftRearMotor.getCurrentPosition(), robot.rightRearMotor.getCurrentPosition());
+                    */
                     //telemetry.addData("Runing Time Max", "%7d", runtime.milliseconds());
                     //telemetry.addData("Running Time At", "%7d", (sTimeout * 1000.));
                     telemetry.update();
@@ -229,7 +271,27 @@ abstract public class MetaAutomation extends LinearOpMode {
 
     public class rotate {
 
+    }
 
+    public class colorSensor {
+        public boolean isObjectGold() {
+            float hsvValues[] = {0F, 0F, 0F};
+
+            final float values[] = hsvValues;
+
+            final double SCALE_FACTOR = 255;
+
+            Color.RGBToHSV((int) (sensors.colorSensor.red() * SCALE_FACTOR),
+                    (int) (sensors.colorSensor.green() * SCALE_FACTOR),
+                    (int) (sensors.colorSensor.blue() * SCALE_FACTOR),
+                    hsvValues);
+
+            if (hsvValues[0]<100) {
+                return Boolean.TRUE;
+            }else {
+                return Boolean.FALSE;
+            }
+        }
     }
 }
 
