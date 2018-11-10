@@ -15,7 +15,7 @@ abstract public class MetaAutomation extends LinearOpMode {
     //Driving Constants
     public static final double speed_FULL   = 1;
     public static final double speed_NORMAL = 0.5;
-    public static final double speed_SLOW   = 0.1;
+    public static final double speed_SLOW   = 0.2;
 
     //Servo Angle Constants
     public static final double turn_HalfLeft  = -45;
@@ -90,7 +90,7 @@ abstract public class MetaAutomation extends LinearOpMode {
     }
 
     public class transform {
-        int delay = 1000;
+        int delay = 750;
 
         public void left() {
             double server = turnLeft;
@@ -134,10 +134,6 @@ abstract public class MetaAutomation extends LinearOpMode {
         }
 
         public void eDriveDistance(double speed, double distanceInches, double stimeout){
-            if (speed < 0.0){
-                speed = -speed;
-                distanceInches = -distanceInches;
-            }
 
             double encoderDistance = distanceInches * COUNTS_PER_INCHES;
             eDrive(speed, encoderDistance, encoderDistance, encoderDistance, encoderDistance, stimeout);
@@ -161,6 +157,7 @@ abstract public class MetaAutomation extends LinearOpMode {
 
             sensorDistance = sensors.distanceSensor.getDistance(DistanceUnit.CM);
             while (opModeIsActive() && (!isBetween(0, sensorCM, sensorDistance))) {
+                sensorDistance = sensors.distanceSensor.getDistance(DistanceUnit.CM);
                 telemetry.addData("Target Max Distance", sensorCM);
                 telemetry.addData("Current Distance", sensorDistance);
                 telemetry.update();

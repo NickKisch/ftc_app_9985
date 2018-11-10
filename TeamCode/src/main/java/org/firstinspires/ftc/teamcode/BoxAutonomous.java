@@ -20,13 +20,34 @@ public class BoxAutonomous extends MetaAutomation {
         transform.eDriveDistance(speed_NORMAL, 2, 2);
 
         transform.right();
-        transform.eDriveDistance(speed_NORMAL, 24, 5);
+        transform.eDriveDistance(speed_NORMAL, 25, 5);
 
-        transform.setAngleAll(turn_HalfLeft);
-        transform.driveDetectBallStop(20, speed_NORMAL, 0);
-        boolean gold = colorSensor.isObjectGold();
-        telemetry.addData("Is Gold", gold);
-        telemetry.update();
+        transform.setAngleAll(turnLeft);
+
+        transform.driveDetectBallStop(19, speed_SLOW, 0);
+        transform.setAngleAll(-75);
+        int i = 0;
+        boolean gold = false;
+
+        while ((i < 3) && !gold) {
+            if (i != 0) {
+                transform.straight();
+                transform.eDriveDistance(speed_NORMAL, 2 , 5);
+                transform.driveDetectBallStop(19, -speed_SLOW, 0);
+                transform.setAngleAll(-75);
+            }
+            transform.driveDetectBallStop(5 , speed_SLOW, 5);
+            sleep(1000);
+            gold = colorSensor.isObjectGold();
+            transform.setAngleAll(75);
+            transform.eDriveDistance(speed_NORMAL, 6, 5);
+            i++;
+        }
+
+
+
+
+
         sleep(10000);
 
 
