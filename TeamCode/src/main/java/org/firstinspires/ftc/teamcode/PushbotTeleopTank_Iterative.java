@@ -42,7 +42,7 @@ public class PushbotTeleopTank_Iterative extends OpMode {
     double          servoOffsetH  = 0.0;                  // Servo mid position
     double          servoOffsetV  = 0.0;
     final double    servoSpeedH   = 0.0005 ;
-    final double    servoSpeedV   = 0.001  ;
+    final double    servoSpeedV   = 0.002  ;
 
     /*
      * Code to run ONCE when the driver hits INIT
@@ -56,7 +56,7 @@ public class PushbotTeleopTank_Iterative extends OpMode {
         sensors.init(hardwareMap);
 
         // Send telemetry message to signify robot waiting;
-        telemetry.addData("Say", "You got this my Nabroleon Bronaparte");//
+        telemetry.addData("Say", "You got this my Nabroleon Bronaparte"); //
     }
 
     /*
@@ -105,7 +105,7 @@ public class PushbotTeleopTank_Iterative extends OpMode {
         if (gamepad2.a)
             liftSpeedArm = -0.5f;
 
-        if ((gamepad2.y && sensors.liftLimitTopArm.getState()==false)|| (gamepad2.a && sensors.liftLimitBottom.getState()==false) )
+        if ((gamepad2.y && sensors.liftLimitTopArm.getState()==false) )
         {
             liftSpeedArm = 0;
         }

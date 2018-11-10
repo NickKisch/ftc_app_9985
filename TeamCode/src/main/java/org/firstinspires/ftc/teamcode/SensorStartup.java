@@ -32,7 +32,6 @@ public class SensorStartup {
         //Touch Sensors
         liftLimitTop = hwMap.get (DigitalChannel.class,"LiftLimit_Top");
         liftLimitBottom = hwMap.get (DigitalChannel.class,"LiftLimit_Bottom");
-        liftLimitBottomArm = hwMap.get(DigitalChannel.class, "LiftLimit_BottomArm");
         liftLimitTopArm = hwMap.get(DigitalChannel.class, "liftLimit_TopArm");
 
         //Color & Distance sensor
