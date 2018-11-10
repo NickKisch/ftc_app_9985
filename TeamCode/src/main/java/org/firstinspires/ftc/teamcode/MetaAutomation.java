@@ -15,7 +15,7 @@ abstract public class MetaAutomation extends LinearOpMode {
     //Driving Constants
     public static final double speed_FULL   = 1;
     public static final double speed_NORMAL = 0.5;
-    public static final double speed_SLOW   = 0.2;
+    public static final double speed_SLOW   = 0.3;
 
     //Servo Angle Constants
     public static final double turn_HalfLeft  = -45;
@@ -85,12 +85,22 @@ abstract public class MetaAutomation extends LinearOpMode {
 
     }
 
+    public void releaseToken(double msTimeOut) {
+        runtime.reset();
+        robot.armMotor.setPower(speed_FULL);
+        while ((runtime.milliseconds() <= msTimeOut) && sensors.liftLimitTopArm.getState()) {
+            idle();
+        }
+        runtime.reset(); // Reset the time counter
+        robot.armMotor.setPower(0);
+    }
+
     private boolean isBetween(double startValue, double endValue, double initValue){
         return endValue > startValue ? initValue > startValue && initValue < endValue : initValue > endValue && initValue < startValue;
     }
 
     public class transform {
-        int delay = 750;
+        int delay = 450;
 
         public void left() {
             double server = turnLeft;
@@ -206,13 +216,13 @@ abstract public class MetaAutomation extends LinearOpMode {
 
                 //Set the mode on encoders to run to position
                 robot.leftFrontMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                //robot.rightFrontMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                //robot.leftRearMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                //robot.rightRearMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                //robot.rightFrontMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                //robot.leftRearMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                //robot.rightRearMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
                 //Reset the timeout and start motion
                 runtime.reset();
-                power = Range.clip(Math.abs(power), 0.0, 1.0);
+                //power = Range.clip(Math.abs(power), 0.0, 1.0);
                 robot.leftFrontMotor.setPower(power);
                 robot.rightFrontMotor.setPower(power);
                 robot.leftRearMotor.setPower(power);

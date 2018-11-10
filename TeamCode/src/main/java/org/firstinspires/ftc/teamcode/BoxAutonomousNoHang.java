@@ -2,8 +2,8 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-@Autonomous (name="Box")
-public class BoxAutonomous extends MetaAutomation {
+@Autonomous (name="Box NO HANG")
+public class BoxAutonomousNoHang extends MetaAutomation {
 
     //Declare variables exclusily used for this autnomous mode only!
 
@@ -15,12 +15,11 @@ public class BoxAutonomous extends MetaAutomation {
 
         //Add autonomous code here
 
-        LiftDown(10);
         transform.straight();
         transform.eDriveDistance(speed_NORMAL, 2, 2);
 
         transform.right();
-        transform.eDriveDistance(speed_NORMAL, 25, 5);
+        transform.eDriveDistance(speed_NORMAL, 20, 5);
 
         transform.setAngleAll(turnLeft);
 
