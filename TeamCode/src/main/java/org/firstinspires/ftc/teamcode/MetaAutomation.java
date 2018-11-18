@@ -26,6 +26,10 @@ abstract public class MetaAutomation extends LinearOpMode {
     public static final double turnStraight = 0.5;
     public static final double turnRight    = 0;
 
+    //Other Servo Constants
+    public static final double latch = 0.5;
+    public static final double releaseLatch = 0;
+
     //Motor Turn Constants
     public static final double speedTurn_FULL   = 0;
     public static final double speedTurn_NORMAL = 0;
@@ -38,6 +42,11 @@ abstract public class MetaAutomation extends LinearOpMode {
 
     //Encoder Constants
     public static final double COUNTS_PER_INCHES = 77.143;
+
+    //Other Constants
+    public static final int topExit = 1;
+    public static final int middleExit = 0;
+    public static final int bottomExit = -1;
 
     //Vars for later
 
@@ -70,6 +79,14 @@ abstract public class MetaAutomation extends LinearOpMode {
         }
     }
 
+    public void latch() {
+        robot.latchServo.setPosition(latch);
+    }
+
+    public void releaseLatch() {
+        robot.latchServo.setPosition(releaseLatch);
+    }
+
     public void LiftDown(double sTimeOut) {
         double reverseTime = 250; //Set a time interval to reverse the motor to stop the momentum
         runtime.reset(); //Reset time counter
@@ -100,30 +117,59 @@ abstract public class MetaAutomation extends LinearOpMode {
     }
 
     public class transform {
-        int delay = 450;
+        private int delay = 450;
+        private boolean forward = true;
+        private boolean reverse = false;
+        boolean leftFrontOrientation = true;
+        boolean rightFrontOrientation = true;
+        boolean leftRearOrientation = true;
+        boolean rightRearOrientation = true;
+
+
+        public void serverOrientation(boolean leftFront, boolean rightFront, boolean leftRear, boolean rightRear){
+            leftFrontOrientation = leftFront;
+            rightFrontOrientation = rightFront;
+            leftRearOrientation = leftRear;
+            rightRearOrientation = rightRear;
+        }
+
 
         public void left() {
             double server = turnLeft;
 
+            serverOrientation(forward, forward, forward, forward);
             setAngleInd(server, server, server, server);
-            sleep(delay);
         }
 
         public void right() {
             double server = turnRight;
 
+            serverOrientation(forward, forward, forward, forward);
             setAngleInd(server, server, server, server);
-            sleep(delay);
 
         }
 
         public void straight() {
             double server = turnStraight;
 
+            serverOrientation(forward, forward, forward, forward);
             setAngleInd(server, server, server, server);
-            sleep(delay);
 
         }
+
+        public void leftNoHit(){
+
+            serverOrientation(forward, forward, forward, reverse);
+            setAngleInd(turnLeft, turnLeft, turnLeft ,turnRight);
+        }
+
+        public void rightNoHit() {
+
+            serverOrientation(forward, forward, reverse, forward);
+            setAngleInd(turnRight, turnRight, turnLeft, turnRight);
+        }
+
+
 
         public void setAngleAll(double angle) {
             angle = Range.clip(angle, -90, 90);
@@ -143,6 +189,30 @@ abstract public class MetaAutomation extends LinearOpMode {
             sleep(delay);
         }
 
+        private void setMotorPower(double power){
+            if (leftFrontOrientation)
+                robot.leftFrontMotor.setPower(power);
+            else
+                robot.leftFrontMotor.setPower(-power);
+
+            if (rightFrontOrientation)
+                robot.rightFrontMotor.setPower(power);
+            else
+                robot.rightFrontMotor.setPower(-power);
+
+            if (leftRearOrientation)
+                robot.leftRearMotor.setPower(power);
+            else
+                robot.leftRearMotor.setPower(-power);
+
+            if (rightRearOrientation)
+                robot.rightRearMotor.setPower(power);
+            else
+                robot.rightRearMotor.setPower(-power);
+
+
+        }
+
         public void eDriveDistance(double speed, double distanceInches, double stimeout){
 
             double encoderDistance = distanceInches * COUNTS_PER_INCHES;
@@ -160,10 +230,7 @@ abstract public class MetaAutomation extends LinearOpMode {
 
             runtime.reset();
 
-            robot.leftFrontMotor.setPower(power);
-            robot.rightFrontMotor.setPower(power);
-            robot.leftRearMotor.setPower(power);
-            robot.rightRearMotor.setPower(power);
+            setMotorPower(power);
 
             sensorDistance = sensors.distanceSensor.getDistance(DistanceUnit.CM);
             while (opModeIsActive() && (!isBetween(0, sensorCM, sensorDistance))) {
@@ -223,10 +290,7 @@ abstract public class MetaAutomation extends LinearOpMode {
                 //Reset the timeout and start motion
                 runtime.reset();
                 //power = Range.clip(Math.abs(power), 0.0, 1.0);
-                robot.leftFrontMotor.setPower(power);
-                robot.rightFrontMotor.setPower(power);
-                robot.leftRearMotor.setPower(power);
-                robot.rightRearMotor.setPower(power);
+                setMotorPower(power);
 
                 idle();
 

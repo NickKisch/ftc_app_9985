@@ -55,6 +55,7 @@ public class HardwarePushbot_Nick
     public Servo rightRearServo    = null;
     public Servo grabberHorizServo = null;
     public Servo grabberVertServo  = null;
+    public Servo latchServo       = null;
     public static final double steeringstriaght =  0.5;
     public static final double steeringright    =    0;
     public static final double steeringleft     =    1;
@@ -104,6 +105,7 @@ public class HardwarePushbot_Nick
         leftRearServo     = hwMap.get(Servo.class, "RearLeft_Servo");
         grabberHorizServo = hwMap.get (Servo.class, "GrabberHoriz_Servo");
         grabberVertServo  = hwMap.get (Servo.class, "GrabberVert_Servo");
+        latchServo        = hwMap.get(Servo.class, "latch_Servo");
 
         rightRearServo.setPosition(MetaAutomation.turnRight);
         rightFrontServo.setPosition(MetaAutomation.turnRight);
@@ -111,6 +113,7 @@ public class HardwarePushbot_Nick
         leftFrontServo.setPosition(MetaAutomation.turnLeft);
         //grabberVertServo.setPosition(steeringstriaght);
         //grabberHorizServo.setPosition(steeringstriaght);
+        latchServo.setPosition(MetaAutomation.latch);
     }
 
  }
