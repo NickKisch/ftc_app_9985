@@ -90,7 +90,7 @@ abstract public class MetaAutomation extends LinearOpMode {
     public void LiftDown(double sTimeOut) {
         double reverseTime = 250; //Set a time interval to reverse the motor to stop the momentum
         runtime.reset(); //Reset time counter
-        robot.liftMotor.setPower(speed_FULL); // Set lift motor to full speed
+        robot.liftMotor.setPower(-speed_FULL); // Set lift motor to full speed
         while(sensors.liftLimitTop.getState() && (runtime.seconds() <= sTimeOut)) {
             //while the touch sensor is not presssed and have not reach the timeout
             // do nothing
@@ -117,7 +117,7 @@ abstract public class MetaAutomation extends LinearOpMode {
     }
 
     public class transform {
-        private int delay = 450;
+        private int delay = 750;
         private boolean forward = true;
         private boolean reverse = false;
         boolean leftFrontOrientation = true;
@@ -159,13 +159,13 @@ abstract public class MetaAutomation extends LinearOpMode {
 
         public void leftNoHit(){
 
-            serverOrientation(forward, forward, forward, reverse);
+            serverOrientation(forward, forward, reverse, forward);
             setAngleInd(turnLeft, turnLeft, turnLeft ,turnRight);
         }
 
         public void rightNoHit() {
 
-            serverOrientation(forward, forward, reverse, forward);
+            serverOrientation(forward, forward, forward, reverse);
             setAngleInd(turnRight, turnRight, turnLeft, turnRight);
         }
 
@@ -177,7 +177,6 @@ abstract public class MetaAutomation extends LinearOpMode {
             double serverStep = ((1./180.)*(angle+90.));
 
             setAngleInd(serverStep, serverStep, serverStep, serverStep);
-            sleep(delay);
 
         }
 
