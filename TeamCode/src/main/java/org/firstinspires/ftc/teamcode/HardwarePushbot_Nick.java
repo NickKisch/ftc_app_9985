@@ -86,7 +86,7 @@ public class HardwarePushbot_Nick
         liftMotor.setDirection(DcMotor.Direction.REVERSE);
         armMotor.setDirection(DcMotor.Direction.REVERSE);
         //Set spefic motors to hault immedeitly.
-        liftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        //liftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         // Set all motors to zero power
         leftFrontMotor.setPower(0);
         leftRearMotor.setPower(0);
@@ -105,7 +105,7 @@ public class HardwarePushbot_Nick
         leftRearServo     = hwMap.get(Servo.class, "RearLeft_Servo");
         grabberHorizServo = hwMap.get (Servo.class, "GrabberHoriz_Servo");
         grabberVertServo  = hwMap.get (Servo.class, "GrabberVert_Servo");
-        latchServo        = hwMap.get(Servo.class, "latch_Servo");
+        //latchServo        = hwMap.get(Servo.class, "latch_Servo");
 
         rightRearServo.setPosition(MetaAutomation.turnRight);
         rightFrontServo.setPosition(MetaAutomation.turnRight);
@@ -113,7 +113,9 @@ public class HardwarePushbot_Nick
         leftFrontServo.setPosition(MetaAutomation.turnLeft);
         //grabberVertServo.setPosition(steeringstriaght);
         //grabberHorizServo.setPosition(steeringstriaght);
-        latchServo.setPosition(MetaAutomation.latch);
+        //latchServo.setPosition(MetaAutomation.latch);
+
+        liftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
  }

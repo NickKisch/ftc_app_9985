@@ -94,7 +94,7 @@ public class PushbotTeleopTank_Iterative extends OpMode {
         if (gamepad1.dpad_down)
             liftSpeed = -1f;
 
-        if ((gamepad1.dpad_up && sensors.liftLimitTopArm.getState()==false)|| (gamepad1.dpad_down && sensors.liftLimitBottom.getState()==false) )
+        if ((gamepad1.dpad_up && sensors.liftLimitTop.getState()==false)|| (gamepad1.dpad_down && sensors.liftLimitBottom.getState()==false) )
         {
             liftSpeed = 0;
         }
@@ -124,7 +124,7 @@ public class PushbotTeleopTank_Iterative extends OpMode {
         robot.rightFrontMotor.setPower(rightFrontSpeed);
         robot.leftRearMotor.setPower(leftRearSpeed);
         robot.rightRearMotor.setPower(rightRearSpeed);
-        robot.liftMotor.setPower(liftSpeed);
+        robot.liftMotor.setPower(-liftSpeed);
         robot.armMotor.setPower(liftSpeedArm);
         //Servo position 1 is left and servo position right is 0 and servo straight is 0.5
         //if (gamepad1.x){
@@ -164,6 +164,8 @@ public class PushbotTeleopTank_Iterative extends OpMode {
        // telemetry.addData("vert Servo",  "position = %.2f",robot.steeringstriaght + servoOffsetV);
         telemetry.addData("Servo Offset H","Offset H = %.2f", servoOffsetH);
         telemetry.addData("Servo Offset V","Offset V = %.2f", servoOffsetV);
+        telemetry.addData("Lift TopLimit", sensors.liftLimitTop.getState());
+        telemetry.addData("Lift BottomLImit", sensors.liftLimitBottom.getState());
         //telemetry.addData("left",  "%.2f", left);
 
     }

@@ -12,20 +12,16 @@ public class testAutonomous extends MetaAutomation {
         setupHardware();
         waitForStart();
 
-        /*
-        //Testing angles
+        transform.straight();
+        sleep(2000);
         transform.left();
         sleep(2000);
         transform.right();
         sleep(2000);
-        transform.straight();
+        transform.leftNoHit();
         sleep(2000);
-        */
-
-        //Testing driving
-        telemetry.addData("Current distance", sensors.distanceSensor.getDistance(DistanceUnit.CM));
-        telemetry.update();
-        sleep(10000);
+        transform.rightNoHit();
+        sleep(2000);
 
     }
 }
