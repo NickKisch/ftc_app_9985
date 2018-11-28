@@ -40,7 +40,7 @@ public class PushbotTeleopTank_Iterative extends OpMode {
     HardwarePushbot_Nick robot       = new HardwarePushbot_Nick(); // use the class created to define a Pushbot's hardware
 
     double          servoOffsetH  = 0.0;                  // Servo mid position
-    double          servoOffsetV  = 0.0;
+    double          servoOffsetV  = 0.5;
     final double    servoSpeedH   = 0.0005 ;
     final double    servoSpeedV   = 0.002  ;
 
@@ -56,7 +56,7 @@ public class PushbotTeleopTank_Iterative extends OpMode {
         sensors.init(hardwareMap);
 
         // Send telemetry message to signify robot waiting;
-        telemetry.addData("Say", "You got this my Nabroleon Bronaparte"); //
+        telemetry.addData("Say", "You got this my Teddy Brosevelt"); //
     }
 
     /*
@@ -89,10 +89,10 @@ public class PushbotTeleopTank_Iterative extends OpMode {
         double liftSpeedArm = 0;
 
         if (gamepad1.dpad_up)
-            liftSpeed = 0.5f;
+            liftSpeed = 1f;
 
         if (gamepad1.dpad_down)
-            liftSpeed = -0.5f;
+            liftSpeed = -1f;
 
         if ((gamepad1.dpad_up && sensors.liftLimitTopArm.getState()==false)|| (gamepad1.dpad_down && sensors.liftLimitBottom.getState()==false) )
         {
@@ -114,7 +114,6 @@ public class PushbotTeleopTank_Iterative extends OpMode {
         else
             speedFactor = 1;
 
-            
             // Run wheels in tank mode (note: The joystick goes negative when pushed forwards, so negate it)
         leftFrontSpeed = (-gamepad1.left_stick_y - gamepad1.left_trigger + gamepad1.right_trigger)  * speedFactor;
         rightFrontSpeed = (-gamepad1.left_stick_y + gamepad1.left_trigger - gamepad1.right_trigger) * speedFactor;
@@ -142,6 +141,7 @@ public class PushbotTeleopTank_Iterative extends OpMode {
         robot.leftFrontServo.setPosition(-.5*gamepad1.right_stick_x+.5);
         robot.rightFrontServo.setPosition(-.5*gamepad1.right_stick_x+.5);
 
+
         //Moves front servos
         if (gamepad2.dpad_right)
             servoOffsetH += servoSpeedH;
@@ -153,7 +153,7 @@ public class PushbotTeleopTank_Iterative extends OpMode {
             servoOffsetV -= servoSpeedV;
 
         // Move both servos to new position.  Assume servos are mirror image of each other.
-        servoOffsetH = Range.clip(servoOffsetH, -0.25, 0.25);
+        servoOffsetH = Range.clip(servoOffsetH, -0.35, 0.35);
         robot.grabberHorizServo.setPosition(robot.steeringstriaght + servoOffsetH);
         servoOffsetV = Range.clip(servoOffsetV, -.5, 0.5);
         robot.grabberVertServo.setPosition(robot.steeringstriaght + servoOffsetV);
