@@ -12,16 +12,9 @@ public class testAutonomous extends MetaAutomation {
         setupHardware();
         waitForStart();
 
-        transform.straight();
-        sleep(2000);
-        transform.left();
-        sleep(2000);
-        transform.right();
-        sleep(2000);
-        transform.leftNoHit();
-        sleep(2000);
         transform.rightNoHit();
-        sleep(2000);
+        transform.driveDetectBallStop(20,speed_SLOW,0);
+        sleep(10000000);
 
     }
 }

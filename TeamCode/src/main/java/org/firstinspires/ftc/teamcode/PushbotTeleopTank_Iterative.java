@@ -40,8 +40,8 @@ public class PushbotTeleopTank_Iterative extends OpMode {
     HardwarePushbot_Nick robot       = new HardwarePushbot_Nick(); // use the class created to define a Pushbot's hardware
 
     double          servoOffsetH  = 0.0;                  // Servo mid position
-    double          servoOffsetV  = 0.0;
-    final double    servoSpeedH   = 0.0005 ;
+    double          servoOffsetV  = 0.5;
+    final double    servoSpeedH   = 0.001 ;
     final double    servoSpeedV   = 0.002  ;
 
     /*

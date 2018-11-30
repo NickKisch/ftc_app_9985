@@ -20,19 +20,19 @@ public class BoxAutonomous extends MetaAutomation {
         transform.right();
         transform.eDriveDistance(speed_NORMAL, 2,2);
         transform.straight();
-        transform.eDriveDistance(-speed_NORMAL, -24, 10);
+        transform.eDriveDistance(-speed_NORMAL, -15, 10);
 
         transform.rightNoHit();
         transform.driveDetectBallStop(20,speed_SLOW,0);
         transform.straight();
-        transform.driveDetectBallStop(5, speed_SLOW, 0);
+        transform.driveDetectBallStop(7,-speed_SLOW,0);
         boolean gold = false;
         sleep(750);
         gold = colorSensor.isObjectGold();
         int exit = topExit;
 
         if (!gold) {
-            transform.rightNoHit();
+            transform.leftNoHit();
             transform.eDriveDistance(speed_SLOW, 2, 5);
             transform.driveDetectBallStop(10, speed_SLOW, 10);
             sleep(750);
@@ -53,13 +53,13 @@ public class BoxAutonomous extends MetaAutomation {
 
         switch(exit) {
             case topExit:
-                transform.eDriveDistance(-speed_NORMAL, -2, 2);
-                transform.left();
-                transform.eDriveDistance(speed_NORMAL, 20, 2);
+                transform.eDriveDistance(-speed_NORMAL, -10, 2);
+                transform.setAngleAll(turn_HalfLeft);
+                transform.eDriveDistance(-speed_NORMAL, -20, 2);
                 break;
 
             case middleExit:
-                transform.eDriveDistance(speed_NORMAL, 27, 5);
+                transform.eDriveDistance(-speed_NORMAL, -27, 5);
                 break;
 
             case bottomExit:
