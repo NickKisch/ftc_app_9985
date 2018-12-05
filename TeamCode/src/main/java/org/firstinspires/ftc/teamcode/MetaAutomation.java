@@ -289,7 +289,10 @@ abstract public class MetaAutomation extends LinearOpMode {
                 //Reset the timeout and start motion
                 runtime.reset();
                 //power = Range.clip(Math.abs(power), 0.0, 1.0);
-                setMotorPower(power);
+                robot.leftFrontMotor.setPower(Range.clip(Math.abs(power), 0.0, 1.0));
+                robot.rightFrontMotor.setPower(power *0.8);
+                robot.leftRearMotor.setPower(power *0.8);
+                robot.rightRearMotor.setPower(power *0.8);
 
                 idle();
 

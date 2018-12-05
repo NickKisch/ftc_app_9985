@@ -15,58 +15,65 @@ public class BoxAutonomousNoHang extends MetaAutomation {
 
         //Add autonomous code here
 
+        transform.right();
+        transform.eDriveDistance(speed_NORMAL, 2,2);
         transform.straight();
-        transform.eDriveDistance(speed_NORMAL, 2, 2);
+        transform.eDriveDistance(-speed_NORMAL, -16.5, 10);
 
-        transform.right();
-        transform.eDriveDistance(speed_NORMAL, 20, 5);
-
-        transform.setAngleAll(turnLeft);
-
-        transform.driveDetectBallStop(19, speed_SLOW, 0);
-        transform.setAngleAll(-75);
-        int i = 0;
+        transform.rightNoHit();
+        transform.driveDetectBallStop(18,speed_SLOW,0);
+        transform.straight();
+        transform.driveDetectBallStop(7,-speed_SLOW,0);
         boolean gold = false;
+        sleep(300);
+        gold = colorSensor.isObjectGold();
+        int exit = topExit;
 
-        while ((i < 3) && !gold) {
-            if (i != 0) {
-                transform.straight();
-                transform.eDriveDistance(-speed_SLOW, -4 , 5);
-                transform.driveDetectBallStop(19, -speed_SLOW, 0);
-                transform.right();
-            }
-            i++;
-            transform.driveDetectBallStop(5 , speed_SLOW, 5);
-            sleep(750);
+        if (!gold) {
+            transform.leftNoHit();
+            transform.eDriveDistance(speed_NORMAL, 3, 5);
+            transform.driveDetectBallStop(20, speed_SLOW, 10);
+            transform.straight();
+            transform.driveDetectBallStop(7, -speed_SLOW, 10);
+            sleep(300);
             gold = colorSensor.isObjectGold();
-            if (gold) {
-                break;
+            exit = middleExit;
+
+            if (!gold) {
+                transform.leftNoHit();
+                transform.eDriveDistance(speed_NORMAL, 3, 10);
+                transform.driveDetectBallStop(20, speed_SLOW, 10);
+                transform.straight();
+                transform.driveDetectBallStop(7, -speed_SLOW, 10);
+                exit = bottomExit;
             }
-
-
-
-            transform.eDriveDistance(-speed_SLOW, -4, 5);
         }
 
-        transform.right();
-        transform.eDriveDistance(speed_NORMAL, 10, 5);
-        if ( i == 0) {
-            transform.eDriveDistance(speed_NORMAL, 2, 5);
-            //transform.setAngleAll(turn_HalfLeft);
-            transform.eDriveDistance(speed_NORMAL, 20, 5);
-        } else if ( i == 2) {
-            transform.eDriveDistance(speed_NORMAL, 27, 5);
-        } else {
-            transform.eDriveDistance(speed_NORMAL, 2, 5);
-            //transform.setAngleAll(turn_HalfRight);
-            transform.eDriveDistance(-speed_NORMAL, -20, 5);
+        transform.straight();
+        transform.eDriveDistance(-speed_NORMAL, -10, 5);
+
+        switch(exit) {
+            case topExit:
+                transform.eDriveDistance(-speed_NORMAL, -20, 2);
+                transform.setAngleAll(turn_HalfLeft);
+                transform.eDriveDistance(-speed_NORMAL, -6, 2);
+                break;
+
+            case middleExit:
+                transform.eDriveDistance(-speed_NORMAL, -24, 5);
+                transform.right();
+                transform.eDriveDistance(speed_NORMAL, 6, 5);
+                break;
+
+            case bottomExit:
+                transform.eDriveDistance(-speed_NORMAL, -10, 2);
+                transform.right();
+                transform.eDriveDistance(speed_NORMAL, 18, 2);
+                break;
         }
 
-        releaseToken(300);
-
-
-
-        sleep(10000);
+        releaseToken(500);
+        transform.straight();
 
 
     }

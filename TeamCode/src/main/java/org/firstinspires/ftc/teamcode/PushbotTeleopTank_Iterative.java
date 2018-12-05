@@ -41,8 +41,8 @@ public class PushbotTeleopTank_Iterative extends OpMode {
 
     double          servoOffsetH  = 0.0;                  // Servo mid position
     double          servoOffsetV  = 0.5;
-    final double    servoSpeedH   = 0.001 ;
-    final double    servoSpeedV   = 0.002  ;
+    final double    servoSpeedH   = 0.001;
+    final double    servoSpeedV   = 0.004;
 
     /*
      * Code to run ONCE when the driver hits INIT
@@ -56,7 +56,7 @@ public class PushbotTeleopTank_Iterative extends OpMode {
         sensors.init(hardwareMap);
 
         // Send telemetry message to signify robot waiting;
-        telemetry.addData("Say", "You got this my Nabroleon Bronaparte"); //
+        telemetry.addData("Say", "You got this my Teddy Brosevelt"); //
     }
 
     /*
