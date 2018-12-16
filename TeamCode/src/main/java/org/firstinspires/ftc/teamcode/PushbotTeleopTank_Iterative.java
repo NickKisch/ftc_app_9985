@@ -43,6 +43,7 @@ public class PushbotTeleopTank_Iterative extends OpMode {
     double          servoOffsetV  = 0.5;
     final double    servoSpeedH   = 0.001;
     final double    servoSpeedV   = 0.004;
+    double          latchUp       = 0;
 
     /*
      * Code to run ONCE when the driver hits INIT
@@ -104,6 +105,12 @@ public class PushbotTeleopTank_Iterative extends OpMode {
 
         if (gamepad2.a)
             liftSpeedArm = -0.5f;
+
+        if (gamepad1.x)
+            latchUp = .5;
+        else if (gamepad1.x)
+            latchUp = -.5;
+
 
         if ((gamepad2.y && sensors.liftLimitTopArm.getState()==false) )
         {
