@@ -12,7 +12,6 @@ public class BoxAutonomous extends MetaAutomation {
         //Init the autonomous
         setupHardware();
         waitForStart();
-
         //Add autonomous code here
 
 
