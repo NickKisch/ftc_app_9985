@@ -35,7 +35,7 @@ abstract public class MetaAutomation extends LinearOpMode {
 
     //Other Servo Constants
     public static final double latch = 0.5;
-    public static final double releaseLatch = 0;
+    public static final double releaseLatch = 0.25;
 
     //Motor Turn Constants
     public static final double speedTurn_FULL   = 0;
@@ -164,28 +164,32 @@ abstract public class MetaAutomation extends LinearOpMode {
             sleep(grainSize);
         }
         tfod.deactivate();
-        if (left > center) {
-            if (left > right) {
-                return leftPosition;
+        if (left == 0 && center == 0 && right == 0) {
+            return -1;
+        } else
+            if (left > center) {
+                if (left > right) {
+                    return leftPosition;
+                } else {
+                    return rightPosition;
+                }
             } else {
-                return rightPosition;
+                if (center > right) {
+                    return centerPosition;
+                } else {
+                    return rightPosition;
+                }
             }
-        } else {
-            if (center > right) {
-                return centerPosition;
-            } else {
-                return rightPosition;
-            }
-        }
-
     }
 
     public void latch() {
         robot.latchServo.setPosition(latch);
+        sleep(500);
     }
 
     public void releaseLatch() {
         robot.latchServo.setPosition(releaseLatch);
+        sleep(500);
     }
 
     public void LiftDown(double sTimeOut) {

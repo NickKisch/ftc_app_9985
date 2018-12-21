@@ -28,12 +28,29 @@ public class TensorBoxAutonomous extends MetaAutomation {
                 telemetry.addData("Final Decision", "RIGHT");
         }
         telemetry.update();
-        sleep(30000);//Remove
-        /*
+        sleep(2500);//Remove
+
         LiftDown(10);
+        releaseLatch();
+        transform.straight();
+        transform.eDriveDistance(speed_NORMAL, 4, 5);
+        switch (mineralPosition) {
+            case leftPosition:
+                break;
+
+            case centerPosition:
+                break;
+
+            case rightPosition:
+                break;
+
+            default:
+                break;
+        }
 
 
-        */
+
+
         tfod.shutdown();
 
     }
