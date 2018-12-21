@@ -43,7 +43,8 @@ public class PushbotTeleopTank_Iterative extends OpMode {
     double          servoOffsetV  = 0.5;
     final double    servoSpeedH   = 0.001;
     final double    servoSpeedV   = 0.004;
-    double          latchUp       = 0;
+    final double    latchUp       = 0.5;
+    final double    latchDown     = 0.25;
 
     /*
      * Code to run ONCE when the driver hits INIT
@@ -89,6 +90,7 @@ public class PushbotTeleopTank_Iterative extends OpMode {
         double liftSpeed = 0;
         double liftSpeedArm = 0;
 
+
         if (gamepad1.dpad_up)
             liftSpeed = 1f;
 
@@ -107,9 +109,9 @@ public class PushbotTeleopTank_Iterative extends OpMode {
             liftSpeedArm = -0.5f;
 
         if (gamepad1.x)
-            latchUp = .5;
-        else if (gamepad1.x)
-            latchUp = -.5;
+            robot.latchServo.setPosition(latchUp);
+        else if (gamepad1.b)
+            robot.latchServo.setPosition(latchDown);
 
 
         if ((gamepad2.y && sensors.liftLimitTopArm.getState()==false) )
@@ -173,6 +175,7 @@ public class PushbotTeleopTank_Iterative extends OpMode {
         telemetry.addData("Servo Offset V","Offset V = %.2f", servoOffsetV);
         telemetry.addData("Lift TopLimit", sensors.liftLimitTop.getState());
         telemetry.addData("Lift BottomLImit", sensors.liftLimitBottom.getState());
+        telemetry.addData("latchPosition", robot.latchServo.getPosition());
         //telemetry.addData("left",  "%.2f", left);
 
     }
