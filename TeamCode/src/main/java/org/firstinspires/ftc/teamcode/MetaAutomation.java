@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode;
 import android.graphics.Color;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
@@ -82,7 +81,7 @@ abstract public class MetaAutomation extends LinearOpMode {
     rotate rotate = new rotate();
     colorSensor colorSensor = new colorSensor();
 
-    enum BallPosition {
+    enum GoldPosition {
         left, center, right, unknown
     }
 
@@ -127,7 +126,7 @@ abstract public class MetaAutomation extends LinearOpMode {
         tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_GOLD_MINERAL, LABEL_SILVER_MINERAL);
     }
 
-    public BallPosition detectMineralPosition(double waitMiliseconds) {
+    public GoldPosition detectMineralPosition(double waitMiliseconds) {
         int grainSize = 250;
         int left = 0;
         int center = 0;
@@ -171,19 +170,19 @@ abstract public class MetaAutomation extends LinearOpMode {
         }
         tfod.deactivate();
         if (left == 0 && center == 0 && right == 0) {
-            return BallPosition.unknown;
+            return GoldPosition.unknown;
         } else
             if (left > center) {
                 if (left > right) {
-                    return BallPosition.left;
+                    return GoldPosition.left;
                 } else {
-                    return BallPosition.right;
+                    return GoldPosition.right;
                 }
             } else {
                 if (center > right) {
-                    return BallPosition.center;
+                    return GoldPosition.center;
                 } else {
-                    return BallPosition.right;
+                    return GoldPosition.right;
                 }
             }
     }
@@ -202,7 +201,7 @@ abstract public class MetaAutomation extends LinearOpMode {
         double reverseTime = 250; //Set a time interval to reverse the motor to stop the momentum
         runtime.reset(); //Reset time counter
         robot.liftMotor.setPower(-speed_FULL); // Set lift motor to full speed
-        while(sensors.liftLimitTop.getState() && (runtime.seconds() <= sTimeOut)) {
+        while(sensors.liftLimitTop.getState() && (runtime.seconds() <= sTimeOut) && opModeIsActive()) {
             //while the touch sensor is not presssed and have not reach the timeout
             // do nothing
             idle();
@@ -216,7 +215,7 @@ abstract public class MetaAutomation extends LinearOpMode {
     public void releaseToken(double msTimeOut) {
         runtime.reset();
         robot.armMotor.setPower(speed_FULL);
-        while ((runtime.milliseconds() <= msTimeOut) && sensors.liftLimitTopArm.getState()) {
+        while ((runtime.milliseconds() <= msTimeOut) && sensors.liftLimitTopArm.getState() && opModeIsActive()) {
             idle();
         }
         runtime.reset(); // Reset the time counter

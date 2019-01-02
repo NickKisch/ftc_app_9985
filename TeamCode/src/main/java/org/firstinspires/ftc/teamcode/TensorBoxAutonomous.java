@@ -2,8 +2,6 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-import org.firstinspires.ftc.robotcore.external.ClassFactory;
-
 @Autonomous(name="TensorBox")
 public class TensorBoxAutonomous extends MetaAutomation {
 
@@ -17,7 +15,7 @@ public class TensorBoxAutonomous extends MetaAutomation {
         waitForStart();
         //End Init Stuff
 
-        BallPosition mineralPosition = detectMineralPosition(10000);
+        GoldPosition mineralPosition = detectMineralPosition(10000);
         switch (mineralPosition) {
             case left:
                 telemetry.addData("Final Decision", "LEFT");
@@ -33,23 +31,27 @@ public class TensorBoxAutonomous extends MetaAutomation {
                 break;
         }
         telemetry.update();
-
+        transform.straight();
         LiftDown(12);
         releaseLatch();
-        transform.straight();
-        transform.eDriveDistance(speed_NORMAL, 4, 5);
         switch (mineralPosition) {
             case left:
+                transform.setAngleAll(30);
+                transform.eDriveDistance(-speed_NORMAL, -30, 5);
                 break;
 
             case center:
             default:
+                transform.straight();
+                transform.eDriveDistance(-speed_NORMAL, -48, 5);
                 break;
 
             case right:
                 break;
         }
 
+        releaseToken(800);
+        transform.straight();
 
 
 
