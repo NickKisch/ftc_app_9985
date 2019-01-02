@@ -10,41 +10,43 @@ public class TensorBoxAutonomous extends MetaAutomation {
 
     @Override
     public void runOpMode(){
+        //Init Stuff
         setupHardware();
         initVuforia();
         initTfod();
         waitForStart();
-        int mineralPosition = detectMineralPosition(10000);
+        //End Init Stuff
+
+        BallPosition mineralPosition = detectMineralPosition(10000);
         switch (mineralPosition) {
-            case leftPosition:
+            case left:
                 telemetry.addData("Final Decision", "LEFT");
                 break;
 
-            case centerPosition:
+            case center:
+            default:
                 telemetry.addData("Final Decision", "CENTER");
                 break;
 
-            case rightPosition:
+            case right:
                 telemetry.addData("Final Decision", "RIGHT");
+                break;
         }
         telemetry.update();
-        sleep(2500);//Remove
 
-        LiftDown(10);
+        LiftDown(12);
         releaseLatch();
         transform.straight();
         transform.eDriveDistance(speed_NORMAL, 4, 5);
         switch (mineralPosition) {
-            case leftPosition:
+            case left:
                 break;
 
-            case centerPosition:
-                break;
-
-            case rightPosition:
-                break;
-
+            case center:
             default:
+                break;
+
+            case right:
                 break;
         }
 

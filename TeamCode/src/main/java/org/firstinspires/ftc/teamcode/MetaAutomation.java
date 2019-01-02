@@ -81,6 +81,12 @@ abstract public class MetaAutomation extends LinearOpMode {
     transform transform = new transform();
     rotate rotate = new rotate();
     colorSensor colorSensor = new colorSensor();
+
+    enum BallPosition {
+        left, center, right, unknown
+    }
+
+
     /*
     *  Functions for autnomouns
     *  this is the stuff that makes autonomous work
@@ -121,7 +127,7 @@ abstract public class MetaAutomation extends LinearOpMode {
         tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_GOLD_MINERAL, LABEL_SILVER_MINERAL);
     }
 
-    public int detectMineralPosition(double waitMiliseconds) {
+    public BallPosition detectMineralPosition(double waitMiliseconds) {
         int grainSize = 250;
         int left = 0;
         int center = 0;
@@ -165,19 +171,19 @@ abstract public class MetaAutomation extends LinearOpMode {
         }
         tfod.deactivate();
         if (left == 0 && center == 0 && right == 0) {
-            return -1;
+            return BallPosition.unknown;
         } else
             if (left > center) {
                 if (left > right) {
-                    return leftPosition;
+                    return BallPosition.left;
                 } else {
-                    return rightPosition;
+                    return BallPosition.right;
                 }
             } else {
                 if (center > right) {
-                    return centerPosition;
+                    return BallPosition.center;
                 } else {
-                    return rightPosition;
+                    return BallPosition.right;
                 }
             }
     }
