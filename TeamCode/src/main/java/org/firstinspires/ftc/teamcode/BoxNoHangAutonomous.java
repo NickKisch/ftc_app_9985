@@ -2,8 +2,8 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-@Autonomous(name="TensorBox")
-public class TensorBoxAutonomous extends MetaAutomation {
+@Autonomous(name="Box noHang", group="NO Hanging")
+public class BoxNoHangAutonomous extends MetaAutomation {
 
 
     @Override
@@ -22,35 +22,47 @@ public class TensorBoxAutonomous extends MetaAutomation {
                 break;
 
             case center:
-            default:
                 telemetry.addData("Final Decision", "CENTER");
                 break;
 
             case right:
                 telemetry.addData("Final Decision", "RIGHT");
                 break;
+
+            default:
+                telemetry.addData("Final Decision", "CENTER -> undecided");
+                break;
         }
         telemetry.update();
         transform.straight();
-        LiftDown(12);
         releaseLatch();
         switch (mineralPosition) {
             case left:
-                transform.setAngleAll(30);
-                transform.eDriveDistance(-speed_NORMAL, -30, 5);
+                transform.setAngleAll(35);
+                transform.eDriveDistance(-speed_NORMAL, -35, 5);
+                transform.straight();
+                transform.eDriveDistance(-speed_NORMAL, -18, 5); // remove under
+                transform.setAngleAll(-42);
+                transform.eDriveDistance(-speed_FULL, -24,5);
                 break;
 
             case center:
             default:
                 transform.straight();
-                transform.eDriveDistance(-speed_NORMAL, -48, 5);
+                transform.eDriveDistance(-speed_NORMAL, -64, 5); //Remove a couple of inches when switching this command to PitAutonomous [-40] -> pit
                 break;
 
             case right:
+                transform.setAngleAll(-35);
+                transform.eDriveDistance(-speed_NORMAL, -37, 5);
+                transform.straight();
+                transform.eDriveDistance(-speed_NORMAL, -18, 5); // remove under
+                transform.setAngleAll(42);
+                transform.eDriveDistance(-speed_FULL, -18,5);
                 break;
         }
 
-        releaseToken(800);
+        releaseToken(1000);
         transform.straight();
 
 

@@ -2,59 +2,67 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-@Autonomous (name="Pit")
+@Autonomous(name="Pit Hang", group="Hanging")
 public class PitAutonomous extends MetaAutomation {
 
-    //Declare variables exclusily used for this autnomous mode only!
 
     @Override
-    public void runOpMode() throws InterruptedException{
-        //Init the autonomous
+    public void runOpMode(){
+        //Init Stuff
         setupHardware();
+        initVuforia();
+        initTfod();
         waitForStart();
+        //End Init Stuff
 
-        //Add autonomous code here
+        GoldPosition mineralPosition = detectMineralPosition(10000);
+        switch (mineralPosition) {
+            case left:
+                telemetry.addData("Final Decision", "LEFT");
+                break;
 
+            case center:
+                telemetry.addData("Final Decision", "CENTER");
+                break;
+
+            case right:
+                telemetry.addData("Final Decision", "RIGHT");
+                break;
+
+            default:
+                telemetry.addData("Final Decision", "CENTER -> undecided");
+                break;
+        }
+        telemetry.update();
+        transform.straight();
         LiftDown(12);
-        transform.right();
-        transform.eDriveDistance(speed_NORMAL, 2,2);
-        transform.straight();
-        transform.eDriveDistance(-speed_NORMAL, -16.5, 10);
-
-        transform.rightNoHit();
-        transform.driveDetectBallStop(18,speed_SLOW,0);
-        transform.straight();
-        transform.driveDetectBallStop(7,-speed_SLOW,0);
-        boolean gold = false;
-        sleep(300);
-        gold = colorSensor.isObjectGold();
-        int exit = topExit;
-
-        if (!gold) {
-            transform.leftNoHit();
-            transform.eDriveDistance(speed_NORMAL, 3, 5);
-            transform.driveDetectBallStop(20, speed_SLOW, 10);
-            transform.straight();
-            transform.driveDetectBallStop(7, -speed_SLOW, 10);
-            sleep(300);
-            gold = colorSensor.isObjectGold();
-            exit = middleExit;
-
-            if (!gold) {
-                transform.leftNoHit();
-                transform.eDriveDistance(speed_NORMAL, 3, 10);
-                transform.driveDetectBallStop(20, speed_SLOW, 10);
+        releaseLatch();
+        switch (mineralPosition) {
+            case left:
+                transform.setAngleAll(35);
+                transform.eDriveDistance(-speed_NORMAL, -35, 5);
                 transform.straight();
-                transform.driveDetectBallStop(7, -speed_SLOW, 10);
-                exit = bottomExit;
-            }
+                break;
+
+            case center:
+            default:
+                transform.straight();
+                transform.eDriveDistance(-speed_NORMAL, -40, 5); //Remove a couple of inches when switching this command to PitAutonomous [-40] -> pit
+                break;
+
+            case right:
+                transform.setAngleAll(-35);
+                transform.eDriveDistance(-speed_NORMAL, -37, 5);
+                transform.straight();
+                break;
         }
 
+        releaseToken(1000);
         transform.straight();
-        transform.eDriveDistance(-speed_NORMAL, -15, 5);
 
-        transform.straight();
+
+
+        tfod.shutdown();
 
     }
-
 }

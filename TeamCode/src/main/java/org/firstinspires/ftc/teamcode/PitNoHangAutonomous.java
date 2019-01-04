@@ -2,8 +2,8 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-@Autonomous(name="Box Hang", group="Hanging")
-public class BoxAutonomous extends MetaAutomation {
+@Autonomous(name="Pit noHang", group="NO Hanging")
+public class PitNoHangAutonomous extends MetaAutomation {
 
 
     @Override
@@ -35,31 +35,24 @@ public class BoxAutonomous extends MetaAutomation {
         }
         telemetry.update();
         transform.straight();
-        LiftDown(12);
         releaseLatch();
         switch (mineralPosition) {
             case left:
                 transform.setAngleAll(35);
                 transform.eDriveDistance(-speed_NORMAL, -35, 5);
                 transform.straight();
-                transform.eDriveDistance(-speed_NORMAL, -18, 5); // remove under
-                transform.setAngleAll(-42);
-                transform.eDriveDistance(-speed_FULL, -24,5);
                 break;
 
             case center:
             default:
                 transform.straight();
-                transform.eDriveDistance(-speed_NORMAL, -64, 5); //Remove a couple of inches when switching this command to PitAutonomous [-40] -> pit
+                transform.eDriveDistance(-speed_NORMAL, -40, 5);
                 break;
 
             case right:
                 transform.setAngleAll(-35);
                 transform.eDriveDistance(-speed_NORMAL, -37, 5);
                 transform.straight();
-                transform.eDriveDistance(-speed_NORMAL, -18, 5); // remove under
-                transform.setAngleAll(42);
-                transform.eDriveDistance(-speed_FULL, -18,5);
                 break;
         }
 
