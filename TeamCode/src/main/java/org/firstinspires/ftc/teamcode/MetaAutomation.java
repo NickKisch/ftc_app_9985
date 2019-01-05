@@ -187,6 +187,95 @@ abstract public class MetaAutomation extends LinearOpMode {
             }
     }
 
+    public GoldPosition enhancedMineralDetection(double detectLength) {
+        int grainSize = 250;
+        int left = 0;
+        int center = 0;
+        int right = 0;
+
+        tfod.activate();
+        runtime.reset();
+
+        while ((runtime.milliseconds() < detectLength) && opModeIsActive()) {
+            List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
+            if (updatedRecognitions != null) {
+                telemetry.addData("# Object Detected", updatedRecognitions.size());
+                //Normal detection
+                if (updatedRecognitions.size() == 3) {
+                    int goldMineralX = -1;
+                    int silverMineral1X = -1;
+                    int silverMineral2X = -1;
+                    for (Recognition recognition : updatedRecognitions) {
+                        if (recognition.getLabel().equals(LABEL_GOLD_MINERAL)) {
+                            goldMineralX = (int) recognition.getLeft();
+                        } else if (silverMineral1X == -1) {
+                            silverMineral1X = (int) recognition.getLeft();
+                        } else {
+                            silverMineral2X = (int) recognition.getLeft();
+                        }
+                    }
+                    if (goldMineralX != -1 && silverMineral1X != -1 && silverMineral2X != -1) {
+                        if (goldMineralX < silverMineral1X && goldMineralX < silverMineral2X) {
+                            telemetry.addData("Gold Mineral Position", "Left");
+                            left += 1;
+                        } else if (goldMineralX > silverMineral1X && goldMineralX > silverMineral2X) {
+                            telemetry.addData("Gold Mineral Position", "Right");
+                            right += 1;
+                        } else {
+                            telemetry.addData("Gold Mineral Position", "Center");
+                            center += 1;
+                        }
+                    }
+                } else if (updatedRecognitions.size() == 2) {
+                    //Enhanced mineral detection
+                    int goldMineralX = -1;
+                    int silverMineral1X = -1;
+                    int silverMineral2X = -1;
+                    for (Recognition recognition : updatedRecognitions) {
+                        if (recognition.getLabel().equals(LABEL_GOLD_MINERAL)) {
+                            goldMineralX = (int) recognition.getLeft();
+                        } else if (silverMineral1X == -1) {
+                            silverMineral1X = (int) recognition.getLeft();
+                        } else {
+                            silverMineral2X = (int) recognition.getLeft();
+                        }
+                        if (goldMineralX != -1 && silverMineral1X != -1 && silverMineral2X != -1) {
+                            if (goldMineralX < silverMineral1X && goldMineralX < silverMineral2X) {
+                                telemetry.addData("Gold Mineral Position", "Left");
+                                left += 1;
+                            } else if (goldMineralX > silverMineral1X && goldMineralX > silverMineral2X) {
+                                telemetry.addData("Gold Mineral Position", "Right");
+                                right += 1;
+                            } else {
+                                telemetry.addData("Gold Mineral Position", "Center");
+                                center += 1;
+                            }
+                        }
+                    }
+
+                    telemetry.update();
+                }
+            }
+            sleep(grainSize);
+        }
+        tfod.deactivate();
+        if (left == 0 && center == 0 && right == 0) {
+            return GoldPosition.unknown;
+        } else if (left > center) {
+            if (left > right) {
+                return GoldPosition.left;
+            } else {
+                return GoldPosition.right;
+            }
+        } else {
+            if (center > right) {
+                return GoldPosition.center;
+            } else {
+                return GoldPosition.right;
+            }
+        }
+    }
+
     public void latch() {
         robot.latchServo.setPosition(latch);
         sleep(500);

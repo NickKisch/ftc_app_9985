@@ -57,7 +57,6 @@ public class PitAutonomous extends MetaAutomation {
                 break;
         }
 
-        releaseToken(1000);
         transform.straight();
 
 

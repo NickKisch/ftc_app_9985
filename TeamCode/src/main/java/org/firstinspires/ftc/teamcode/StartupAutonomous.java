@@ -11,6 +11,7 @@ public class StartupAutonomous extends MetaAutomation {
 
     @Override
     public void runOpMode () {
+        setupHardware();
         initVuforia();
         initTfod();
         tfod.activate();

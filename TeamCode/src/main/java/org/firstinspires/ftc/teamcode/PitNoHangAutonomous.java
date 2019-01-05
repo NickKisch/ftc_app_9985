@@ -56,7 +56,6 @@ public class PitNoHangAutonomous extends MetaAutomation {
                 break;
         }
 
-        releaseToken(1000);
         transform.straight();
 
 
