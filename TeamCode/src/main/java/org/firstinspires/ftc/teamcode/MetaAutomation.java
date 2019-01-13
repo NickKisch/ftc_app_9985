@@ -122,8 +122,11 @@ abstract public class MetaAutomation extends LinearOpMode {
         int tfodMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
                 "tfodMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
+        tfodParameters.minimumConfidence = 0.50;
+
         tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
         tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_GOLD_MINERAL, LABEL_SILVER_MINERAL);
+
     }
 
     public GoldPosition detectMineralPosition(double waitMiliseconds) {
@@ -230,20 +233,22 @@ abstract public class MetaAutomation extends LinearOpMode {
                     //Enhanced mineral detection
                     int goldMineralX = -1;
                     int silverMineral1X = -1;
-                    int silverMineral2X = -1;
                     for (Recognition recognition : updatedRecognitions) {
+                        int imageWidth = recognition.getImageWidth();
+                        int sectorLine1 = (imageWidth/3);
+                        int sectorLine2 = ((imageWidth/3)*2);
                         if (recognition.getLabel().equals(LABEL_GOLD_MINERAL)) {
                             goldMineralX = (int) recognition.getLeft();
                         } else if (silverMineral1X == -1) {
                             silverMineral1X = (int) recognition.getLeft();
                         } else {
-                            silverMineral2X = (int) recognition.getLeft();
+                            //silverMineral2X = (int) recognition.getLeft();
                         }
-                        if (goldMineralX != -1 && silverMineral1X != -1 && silverMineral2X != -1) {
-                            if (goldMineralX < silverMineral1X && goldMineralX < silverMineral2X) {
+                        if (goldMineralX != -1 && silverMineral1X != -1/* && silverMineral2X != -1*/) {
+                            if (goldMineralX < silverMineral1X/* && goldMineralX < silverMineral2X*/) {
                                 telemetry.addData("Gold Mineral Position", "Left");
                                 left += 1;
-                            } else if (goldMineralX > silverMineral1X && goldMineralX > silverMineral2X) {
+                            } else if (goldMineralX > silverMineral1X/* && goldMineralX > silverMineral2X*/) {
                                 telemetry.addData("Gold Mineral Position", "Right");
                                 right += 1;
                             } else {
