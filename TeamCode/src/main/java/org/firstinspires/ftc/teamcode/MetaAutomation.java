@@ -205,6 +205,7 @@ abstract public class MetaAutomation extends LinearOpMode {
                 telemetry.addData("# Object Detected", updatedRecognitions.size());
                 //Normal detection
                 if (updatedRecognitions.size() == 3) {
+                    telemetry.addData("Detection Method:", "NORMAL");
                     int goldMineralX = -1;
                     int silverMineral1X = -1;
                     int silverMineral2X = -1;
@@ -230,37 +231,61 @@ abstract public class MetaAutomation extends LinearOpMode {
                         }
                     }
                 } else if (updatedRecognitions.size() == 2) {
-                    //Enhanced mineral detection
-                    int goldMineralX = -1;
-                    int silverMineral1X = -1;
+
+                    telemetry.addData("Detection Method:", "TWO ONLY");
+                    int mineral1 = 0;
+                    int mineral2 = 0;
+                    int mineral3 = 0;
+
                     for (Recognition recognition : updatedRecognitions) {
                         int imageWidth = recognition.getImageWidth();
                         int sectorLine1 = (imageWidth/3);
+                        int halfLine = (imageWidth/2);
                         int sectorLine2 = ((imageWidth/3)*2);
+                        int mineralPosition = (int) recognition.getLeft();
                         if (recognition.getLabel().equals(LABEL_GOLD_MINERAL)) {
-                            goldMineralX = (int) recognition.getLeft();
-                        } else if (silverMineral1X == -1) {
-                            silverMineral1X = (int) recognition.getLeft();
-                        } else {
-                            //silverMineral2X = (int) recognition.getLeft();
-                        }
-                        if (goldMineralX != -1 && silverMineral1X != -1/* && silverMineral2X != -1*/) {
-                            if (goldMineralX < silverMineral1X/* && goldMineralX < silverMineral2X*/) {
-                                telemetry.addData("Gold Mineral Position", "Left");
-                                left += 1;
-                            } else if (goldMineralX > silverMineral1X/* && goldMineralX > silverMineral2X*/) {
-                                telemetry.addData("Gold Mineral Position", "Right");
-                                right += 1;
+
+                            if (mineralPosition < sectorLine1 ) {
+                                mineral1 = 1;
+                                telemetry.addData("Gold Mineral Detected", "Left");
+                            } else if (mineralPosition < sectorLine2) {
+                                mineral2 = 1;
+                                telemetry.addData("Gold Mineral Detected", "Center");
                             } else {
-                                telemetry.addData("Gold Mineral Position", "Center");
-                                center += 1;
+                                mineral3 = 1;
+                                telemetry.addData("Gold Mineral Detected", "Right");
+                            }
+                        } else {
+                            if (mineralPosition < sectorLine1) {
+                                mineral1 = -1;
+                                telemetry.addData("Silver Mineral Detected", "Left");
+                            } else if (mineralPosition < sectorLine2) {
+                                mineral2 = -1;
+                                telemetry.addData("Silver Mineral Detected", "Center");
+                            } else {
+                                mineral3 = -1;
+                                telemetry.addData("Silver Mineral Detected", "Right");
                             }
                         }
                     }
-
-                    telemetry.update();
+                    if (mineral1 > mineral2) {
+                        if (mineral1 > mineral3) {
+                            telemetry.addData("Gold Mineral Position", "Left");
+                            left += 1;
+                        } else {
+                            telemetry.addData("Gold Mineral Position", "Right");
+                            right += 1;
+                        }
+                    } else if (mineral2 > mineral3) {
+                        telemetry.addData("Gold Mineral Position", "Center");
+                        center += 1;
+                    } else {
+                        telemetry.addData("Gold Mineral Position", "Right");
+                        right += 1;
+                    }
                 }
             }
+            telemetry.update();
             sleep(grainSize);
         }
         tfod.deactivate();
