@@ -15,7 +15,7 @@ public class BoxNoHangAutonomous extends MetaAutomation {
         waitForStart();
         //End Init Stuff
 
-        GoldPosition mineralPosition = detectMineralPosition(10000);
+        GoldPosition mineralPosition = enhancedMineralDetection(10000);
         switch (mineralPosition) {
             case left:
                 telemetry.addData("Final Decision", "LEFT");
@@ -34,7 +34,6 @@ public class BoxNoHangAutonomous extends MetaAutomation {
                 break;
         }
         telemetry.update();
-        transform.straight();
         releaseLatch();
         switch (mineralPosition) {
             case left:
