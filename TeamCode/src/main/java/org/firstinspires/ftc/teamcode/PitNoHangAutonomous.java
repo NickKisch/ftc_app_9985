@@ -40,6 +40,7 @@ public class PitNoHangAutonomous extends MetaAutomation {
                 transform.setAngleAll(35);
                 transform.eDriveDistance(-speed_NORMAL, -35, 5);
                 transform.straight();
+                transform.eDriveDistance(-speed_NORMAL, -10, 2);
                 break;
 
             case center:
@@ -52,6 +53,7 @@ public class PitNoHangAutonomous extends MetaAutomation {
                 transform.setAngleAll(-35);
                 transform.eDriveDistance(-speed_NORMAL, -37, 5);
                 transform.straight();
+                transform.eDriveDistance(-speed_NORMAL, -10, 2);
                 break;
         }
 
